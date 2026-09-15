@@ -3,113 +3,161 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>LinguaFlow AI V3.2</title>
+<title>LinguaFlow AI V3.3</title>
 <style>
-*{box-sizing:border-box}body{margin:0;background:#f5f7fb;color:#172033;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","Microsoft YaHei",sans-serif}.side{position:fixed;inset:0 auto 0 0;width:230px;background:#172033;color:#fff;padding:22px 14px}.brand{font-size:22px;font-weight:800;padding:8px 12px 24px}.nav button{width:100%;display:block;text-align:left;border:0;background:none;color:#dce2ee;padding:13px 14px;border-radius:10px;margin:4px 0;cursor:pointer}.nav button.active,.nav button:hover{background:#315efb;color:#fff}.main{margin-left:230px;padding:28px;max-width:1450px}.page{display:none}.page.active{display:block}.top{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:20px}.card{background:#fff;border:1px solid #e3e8f0;border-radius:16px;padding:20px;margin-bottom:18px;box-shadow:0 4px 16px rgba(20,30,50,.04)}.grid{display:grid;grid-template-columns:repeat(4,1fr);gap:15px}.stat{font-size:28px;font-weight:800;margin-top:8px}.muted{color:#718096}.btn{border:0;border-radius:9px;padding:10px 15px;cursor:pointer}.primary{background:#315efb;color:#fff}.secondary{background:#edf1ff;color:#315efb}.danger{background:#fff0f0;color:#c33}.input,textarea{width:100%;border:1px solid #d7deea;border-radius:10px;padding:12px}.input{height:44px}textarea{min-height:170px;resize:vertical}.two{display:grid;grid-template-columns:1.2fr .8fr;gap:18px}.reader{font-size:18px;line-height:2;white-space:pre-wrap}.word{background:#fff0a8;padding:1px 3px;border-radius:4px;cursor:pointer}.pill{display:inline-block;background:#edf1ff;color:#315efb;border-radius:99px;padding:4px 9px;font-size:13px}.mobile{display:none}.toast{position:fixed;right:20px;bottom:20px;background:#172033;color:#fff;padding:12px 16px;border-radius:10px;display:none;z-index:20}
-@media(max-width:800px){.side{display:none}.main{margin:0;padding:16px 16px 76px}.grid{grid-template-columns:repeat(2,1fr)}.two{grid-template-columns:1fr}.mobile{position:fixed;display:flex;left:0;right:0;bottom:0;background:#172033;padding:8px;z-index:9}.mobile button{flex:1;background:none;color:#fff;border:0;font-size:12px}}
+*{box-sizing:border-box}body{margin:0;font-family:Arial,"Microsoft YaHei",sans-serif;background:#f5f7fb;color:#18202a}
+button,input,textarea,select{font:inherit}button{cursor:pointer;border:0;border-radius:10px;padding:10px 14px;background:#2563eb;color:#fff}
+.app{display:flex;min-height:100vh}.side{width:230px;background:#111827;color:#fff;padding:20px;position:fixed;inset:0 auto 0 0}.brand{font-size:22px;font-weight:700;margin-bottom:24px}.nav button{display:block;width:100%;text-align:left;background:transparent;margin:5px 0}.nav button.active,.nav button:hover{background:#1f2937}.main{margin-left:230px;flex:1;padding:24px;max-width:1300px}.top{display:flex;justify-content:space-between;align-items:center;margin-bottom:20px}.page{display:none}.page.active{display:block}.card{background:#fff;border:1px solid #e5e7eb;border-radius:16px;padding:18px;margin-bottom:16px;box-shadow:0 3px 12px #00000008}.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}.stat{font-size:28px;font-weight:700;margin-top:8px}.muted{color:#6b7280}.row{display:flex;gap:10px;flex-wrap:wrap;align-items:center}.grow{flex:1}textarea,input,select{width:100%;border:1px solid #d1d5db;border-radius:10px;padding:11px;background:#fff}.reader{font-size:18px;line-height:2.05;white-space:pre-wrap}.word{display:inline-block;padding:0 3px;border-radius:5px}.word:hover{background:#dbeafe}.tag{display:inline-block;padding:4px 8px;border-radius:999px;background:#eef2ff;margin:3px;font-size:12px}.list{display:flex;flex-direction:column;gap:10px}.item{padding:12px;border:1px solid #e5e7eb;border-radius:10px}.danger{background:#dc2626}.secondary{background:#6b7280}.success{background:#059669}.warning{background:#d97706}.hidden{display:none!important}.modal{position:fixed;inset:0;background:#0008;display:none;align-items:center;justify-content:center;padding:20px;z-index:5}.modal.show{display:flex}.modalbox{background:#fff;border-radius:16px;max-width:620px;width:100%;padding:20px;max-height:85vh;overflow:auto}.progress{height:9px;background:#e5e7eb;border-radius:99px;overflow:hidden}.bar{height:100%;background:#2563eb}.review-card{text-align:center;padding:35px}.review-word{font-size:42px;font-weight:700;margin:20px}.small{font-size:13px}.cover{border:2px dashed #d1d5db;padding:30px;text-align:center;border-radius:12px}.mobile-nav{display:none}
+@media(max-width:800px){.side{display:none}.main{margin-left:0;padding:14px 14px 80px}.grid{grid-template-columns:1fr}.mobile-nav{display:flex;position:fixed;bottom:0;left:0;right:0;background:#111827;z-index:4}.mobile-nav button{flex:1;border-radius:0;background:transparent;font-size:12px;padding:12px 4px}.top h1{font-size:22px}}
 </style>
 </head>
 <body>
-<aside class="side"><div class="brand">LinguaFlow AI</div><nav class="nav">
-<button class="active" data-page="home">◉ 学习概览</button>
-<button data-page="reader">▣ 智能阅读</button>
-<button data-page="vocab">▣ 我的词库</button>
-<button data-page="review">↻ 今日复习</button>
-<button data-page="library">▤ 资源库</button>
-<button data-page="stats">▥ 学习数据</button>
-<button data-page="settings">⚙ 设置</button>
-</nav></aside>
-
+<div class="app">
+<aside class="side"><div class="brand">LinguaFlow AI</div><div class="muted" style="color:#9ca3af">V3.3 · Smart Vocabulary</div><div class="nav" id="nav"></div></aside>
 <main class="main">
-<section id="home" class="page active">
-<div class="top"><h1>学习概览</h1><button class="btn primary" onclick="go('reader')">开始阅读</button></div>
+<div class="top"><div><h1 id="title">学习总览</h1><div class="muted">英语阅读 · 单词 · 复习</div></div><button onclick="exportData()">备份数据</button></div>
+
+<section id="dashboard" class="page active">
 <div class="grid">
-<div class="card">文章数量<div id="a" class="stat">0</div></div>
-<div class="card">词库词汇<div id="w" class="stat">0</div></div>
-<div class="card">待复习<div id="d" class="stat">0</div></div>
-<div class="card">连续学习<div id="st" class="stat">0 天</div></div>
+<div class="card"><div class="muted">阅读文章</div><div class="stat" id="sArticles">0</div></div>
+<div class="card"><div class="muted">词汇总量</div><div class="stat" id="sWords">0</div></div>
+<div class="card"><div class="muted">已掌握</div><div class="stat" id="sMastered">0</div></div>
 </div>
-<div class="card"><h2>V3.2 更新</h2>
-<p>本版加入<strong>图片导入、PDF文件导入、网页链接导入入口</strong>。</p>
-<p class="muted">目前继续使用 GitHub Pages，不需要 Vercel，也不需要 DeepSeek API。图片可以预览；扫描版 PDF 的 OCR、任意网页自动抓取等高级能力将在后续版本接入。</p></div>
+<div class="card"><h2>V3.3 核心升级</h2><p>智能词库 + 艾宾浩斯复习 + 记忆状态动态调整。</p><div class="row"><span class="tag">1天</span><span class="tag">3天</span><span class="tag">7天</span><span class="tag">15天</span><span class="tag">动态间隔</span></div></div>
+<div class="card"><h2>快速开始</h2><button onclick="show('reader')">导入文章开始阅读</button></div>
 </section>
 
 <section id="reader" class="page">
-<div class="top"><h1>智能阅读</h1></div>
-<div class="card"><h2>导入文章</h2>
-<button class="btn secondary" onclick="document.getElementById('imgFile').click()">📷 导入图片</button>
-<button class="btn secondary" onclick="document.getElementById('pdfFile').click()">📄 导入 PDF</button>
-<button class="btn secondary" onclick="showUrl()">🌐 网页链接</button>
-<input id="imgFile" type="file" accept="image/*" hidden onchange="imageImport(event)">
-<input id="pdfFile" type="file" accept=".pdf,application/pdf" hidden onchange="pdfImport(event)">
-<div id="importMsg" class="muted" style="margin-top:12px"></div>
-<div id="preview" style="margin-top:15px"></div>
-</div>
-<div class="card">
-<input id="title" class="input" placeholder="文章标题"><br><br>
-<textarea id="article" placeholder="也可以直接把英文文章粘贴到这里……"></textarea><br><br>
-<button class="btn primary" onclick="openArticle()">开始阅读</button>
-<button class="btn secondary" onclick="demo()">使用示例文章</button>
-<button class="btn secondary" onclick="saveArticle()">保存文章</button>
-</div>
-<div class="two">
-<div class="card"><h2>文章阅读</h2><div id="text" class="reader muted">请先导入文章。</div></div>
-<div class="card"><h2>AI 分析</h2><p class="muted">AI 入口已预留。当前没有接入 DeepSeek，所以不会调用 API。</p><button class="btn primary" onclick="noApi()">分析选中句子</button></div>
+<div class="card"><h2>阅读器</h2>
+<div class="row"><button onclick="loadDemo()">载入示例文章</button><button class="secondary" onclick="saveArticle()">保存文章</button><button onclick="clearReader()">清空</button></div>
+<br><textarea id="articleInput" rows="8" placeholder="把英文文章粘贴到这里……"></textarea><br><br>
+<div id="readerBox" class="reader">文章内容会显示在这里。点击单词即可查看词义并加入词库。</div>
 </div>
 </section>
 
-<section id="vocab" class="page"><div class="top"><h1>我的词库</h1><input id="search" class="input" style="max-width:250px" placeholder="搜索单词" oninput="render()"></div><div id="vlist"></div></section>
-<section id="review" class="page"><div class="top"><h1>今日复习</h1></div><div id="reviews"></div></section>
-<section id="library" class="page"><div class="top"><h1>资源库</h1></div><div id="libraryList"></div></section>
-<section id="stats" class="page"><div class="top"><h1>学习数据</h1></div><div class="grid">
-<div class="card">阅读文章<div id="sa" class="stat">0</div></div>
-<div class="card">累计词汇<div id="sw" class="stat">0</div></div>
-<div class="card">已掌握<div id="sm" class="stat">0</div></div>
-<div class="card">复习次数<div id="sr" class="stat">0</div></div>
+<section id="import" class="page">
+<div class="card"><h2>资源导入</h2>
+<div class="cover"><h3>图片 / PDF / 网页</h3><p class="muted">V3.3 保留 V3.2 导入入口；本版本无需 API。</p>
+<input id="imgFile" type="file" accept="image/*" onchange="previewImage(event)"><br><br>
+<div id="imgPreview"></div></div>
+<br>
+<div class="row"><input id="pdfFile" type="file" accept=".pdf,application/pdf"><button onclick="pdfInfo()">读取 PDF</button></div><br>
+<div class="row"><input id="urlInput" placeholder="输入网页 URL"><button onclick="urlInfo()">导入网页</button></div>
+<p id="importMsg" class="muted"></p>
 </div></section>
-<section id="settings" class="page"><div class="top"><h1>设置</h1></div>
-<div class="card"><h2>AI 功能</h2><p>当前：<span class="pill">未接入 DeepSeek API</span></p><p class="muted">现在无需购买 API。以后接入 DeepSeek 时再升级。</p></div>
-<div class="card"><h2>数据备份</h2><button class="btn secondary" onclick="exportData()">导出数据</button>
-<button class="btn secondary" onclick="document.getElementById('dataFile').click()">导入数据</button>
-<input id="dataFile" type="file" accept=".json" hidden onchange="importData(event)"></div>
+
+<section id="vocab" class="page">
+<div class="card"><div class="row"><h2 class="grow">智能词库</h2><input id="vsearch" style="max-width:260px" placeholder="搜索单词" oninput="renderVocab()"></div>
+<div id="vocabList" class="list"></div></div>
+</section>
+
+<section id="review" class="page">
+<div class="card review-card"><h2>今日复习</h2><div id="reviewArea"></div></div>
+</section>
+
+<section id="resources" class="page">
+<div class="card"><h2>资源库</h2><div id="articleList" class="list"></div></div>
+</section>
+
+<section id="stats" class="page">
+<div class="grid"><div class="card"><div class="muted">累计复习次数</div><div class="stat" id="sReviews">0</div></div><div class="card"><div class="muted">学习天数</div><div class="stat" id="sDays">0</div></div><div class="card"><div class="muted">连续学习</div><div class="stat" id="sStreak">0</div></div></div>
+<div class="card"><h2>记忆状态说明</h2><p>忘记：缩短复习间隔；模糊：保持或小幅增加；记住：延长间隔。最高暂设 60 天。</p></div>
+</section>
+
+<section id="settings" class="page">
+<div class="card"><h2>数据管理</h2><button onclick="exportData()">导出 JSON</button> <button class="secondary" onclick="document.getElementById('importData').click()">导入 JSON</button><input id="importData" type="file" accept=".json" class="hidden" onchange="importData(event)"><button class="danger" onclick="resetAll()">清空全部数据</button></div>
 </section>
 </main>
+</div>
+<div class="mobile-nav" id="mnav"></div>
 
-<div class="mobile"><button onclick="go('home')">概览</button><button onclick="go('reader')">阅读</button><button onclick="go('vocab')">词库</button><button onclick="go('review')">复习</button><button onclick="go('settings')">设置</button></div>
-<div id="toast" class="toast"></div>
+<div class="modal" id="modal"><div class="modalbox"><div class="row"><h2 id="modalWord" class="grow"></h2><button class="secondary" onclick="closeModal()">关闭</button></div><div id="modalBody"></div></div></div>
 
 <script>
-const KEY='linguaflow_v32';
-let S=JSON.parse(localStorage.getItem(KEY)||'{"articles":[],"vocab":[],"reviews":0,"streak":0}');
-const $=id=>document.getElementById(id);
-function save(){localStorage.setItem(KEY,JSON.stringify(S));render()}
-function toast(x){let t=$('toast');t.textContent=x;t.style.display='block';setTimeout(()=>t.style.display='none',2300)}
-function go(id){document.querySelectorAll('.page').forEach(x=>x.classList.remove('active'));$(id).classList.add('active');document.querySelectorAll('.nav button').forEach(x=>x.classList.toggle('active',x.dataset.page===id));render()}
-document.querySelectorAll('.nav button').forEach(x=>x.onclick=()=>go(x.dataset.page));
-
-function demo(){$('title').value='The Value of Reading';$('article').value='Reading regularly can improve your vocabulary and help you understand complex ideas. When students encounter unfamiliar words in context, they can often infer meaning from the surrounding sentences. Thoughtful readers do not simply memorize definitions; they connect new knowledge with what they already know.'}
-function esc(s){return String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
-function highlight(s){return esc(s).replace(/([A-Za-z][A-Za-z'-]{2,})/g,'<span class="word" onclick="word(this.textContent)">$1</span>')}
-function openArticle(){let x=$('article').value.trim();if(!x)return toast('请先输入或导入英文文章');$('text').innerHTML=highlight(x);S.articles.push({title:$('title').value||'未命名文章',text:x,date:Date.now(),source:'text'});S.streak=Math.max(1,S.streak);save();toast('文章已载入')}
-function saveArticle(){let x=$('article').value.trim();if(!x)return toast('没有文章');S.articles.push({title:$('title').value||'未命名文章',text:x,date:Date.now(),source:'saved'});save();toast('已保存')}
-function word(x){toast('当前未接入 DeepSeek：以后这里会显示 '+x+' 的 AI 词汇分析')}
-function noApi(){toast('当前未接入 DeepSeek API，不会产生费用')}
-function showUrl(){let u=prompt('输入网页 URL：');if(!u)return;try{new URL(u)}catch{return toast('URL 格式不正确')} $('importMsg').textContent='已记录网页链接：'+u+'。当前静态 GitHub Pages 受跨域限制，不会绕过网站权限抓取正文；请将正文粘贴到下方。'}
-function imageImport(e){let f=e.target.files[0];if(!f)return;$('importMsg').textContent='已选择图片：'+f.name+'。当前支持图片预览；自动 OCR 将在后续版本接入。';let r=new FileReader();r.onload=()=>{$('preview').innerHTML='<img src="'+r.result+'" style="max-width:100%;max-height:380px;border-radius:12px">'};r.readAsDataURL(f)}
-function pdfImport(e){let f=e.target.files[0];if(!f)return;$('importMsg').textContent='已选择 PDF：'+f.name+'。当前版本先确认文件选择；复杂 PDF 文本解析/OCR 将在后续升级。';toast('PDF 已选择')}
-function render(){
-let due=S.vocab.filter(x=>x.next<=Date.now()).length;
-$('a').textContent=S.articles.length;$('w').textContent=S.vocab.length;$('d').textContent=due;$('st').textContent=S.streak+' 天';
-$('sa').textContent=S.articles.length;$('sw').textContent=S.vocab.length;$('sm').textContent=S.vocab.filter(x=>x.mastery>=3).length;$('sr').textContent=S.reviews;
-let q=($('search')?.value||'').toLowerCase(),vs=S.vocab.filter(x=>x.word.toLowerCase().includes(q));
-$('vlist').innerHTML=vs.length?vs.map(x=>'<div class="card"><b>'+esc(x.word)+'</b> <span class="pill">'+esc(x.meaning)+'</span><p class="muted">掌握度 '+x.mastery+' · '+(x.next<=Date.now()?'今天复习':new Date(x.next).toLocaleDateString())+'</p></div>').join(''):'<div class="card muted">词库暂时为空。</div>';
-let duev=S.vocab.map((x,i)=>({...x,i})).filter(x=>x.next<=Date.now());
-$('reviews').innerHTML=duev.length?duev.map(x=>'<div class="card"><h2>'+esc(x.word)+'</h2><p>'+esc(x.meaning)+'</p><button class="btn danger" onclick="rv('+x.i+',0)">忘记</button> <button class="btn secondary" onclick="rv('+x.i+',1)">模糊</button> <button class="btn primary" onclick="rv('+x.i+',2)">记住</button></div>').join(''):'<div class="card"><h2>今天没有待复习词</h2><p class="muted">继续阅读吧。</p></div>';
-$('libraryList').innerHTML=S.articles.length?S.articles.slice().reverse().map(x=>'<div class="card"><b>'+esc(x.title)+'</b><p class="muted">'+new Date(x.date).toLocaleString()+' · '+esc(x.source||'')+'</p><p>'+esc(x.text.slice(0,180))+'…</p></div>').join(''):'<div class="card muted">暂无保存文章。</div>'
+const KEY="linguaflow_v33";
+let data=JSON.parse(localStorage.getItem(KEY)||'{"articles":[],"words":{},"reviews":0,"days":{}}');
+let currentReview=null;
+const pages=[["dashboard","总览"],["reader","阅读器"],["import","导入"],["vocab","词库"],["review","复习"],["resources","资源库"],["stats","统计"],["settings","设置"]];
+function save(){localStorage.setItem(KEY,JSON.stringify(data));renderAll()}
+function navInit(){
+ const nav=document.getElementById("nav"), mn=document.getElementById("mnav");
+ pages.forEach(([id,n],i)=>{let b=document.createElement("button");b.textContent=n;b.onclick=()=>show(id);nav.appendChild(b);let m=b.cloneNode(true);m.onclick=()=>show(id);mn.appendChild(m)});
 }
-function rv(i,s){let x=S.vocab[i];x.mastery=Math.max(0,x.mastery+(s==2?1:s==0?-1:0));x.next=Date.now()+(s==2?3:s==1?1:0)*86400000;S.reviews++;save();toast('复习完成')}
-function exportData(){let a=document.createElement('a');a.href=URL.createObjectURL(new Blob([JSON.stringify(S,null,2)],{type:'application/json'}));a.download='linguaflow-backup.json';a.click()}
-function importData(e){let r=new FileReader();r.onload=()=>{try{S=JSON.parse(r.result);save();toast('导入成功')}catch{toast('文件格式错误')}};r.readAsText(e.target.files[0])}
-render();
+function show(id){document.querySelectorAll(".page").forEach(x=>x.classList.remove("active"));document.getElementById(id).classList.add("active");document.getElementById("title").textContent=pages.find(x=>x[0]===id)?.[1]||"";document.querySelectorAll(".nav button").forEach((b,i)=>b.classList.toggle("active",pages[i][0]===id));if(id==="vocab")renderVocab();if(id==="review")renderReview();if(id==="resources")renderArticles()}
+function today(){return new Date().toISOString().slice(0,10)}
+function addWord(w){
+ w=w.toLowerCase().replace(/[^a-z'-]/g,""); if(!w||w.length<2)return;
+ if(!data.words[w])data.words[w]={word:w,seen:0,mastery:0,interval:1,next:today(),last:null,created:today()};
+ data.words[w].seen++;
+ data.words[w].next=today();
+ save();
+ openWord(w);
+}
+function openWord(w){
+ let x=data.words[w]||{word:w,seen:1,mastery:0,interval:1,next:today()};
+ document.getElementById("modalWord").textContent=w;
+ document.getElementById("modalBody").innerHTML=`<p><b>中文释义：</b>本地词库未连接在线词典。你可以先记录这个词，并在复习时判断记忆状态。</p>
+ <p><b>出现次数：</b>${x.seen}　<b>掌握度：</b>${x.mastery}%</p>
+ <p><b>当前间隔：</b>${x.interval} 天　<b>下次复习：</b>${x.next}</p>
+ <div class="row"><button onclick="markWord('${w}','remember')">记住</button><button class="warning" onclick="markWord('${w}','fuzzy')">模糊</button><button class="danger" onclick="markWord('${w}','forgot')">忘记</button></div>`;
+ document.getElementById("modal").classList.add("show");
+}
+function closeModal(){document.getElementById("modal").classList.remove("show")}
+function markWord(w,type){
+ let x=data.words[w]; if(!x)return;
+ if(type==="remember"){x.mastery=Math.min(100,x.mastery+20);x.interval=Math.min(60,Math.max(1,Math.round(x.interval*2)))}
+ if(type==="fuzzy"){x.mastery=Math.min(100,Math.max(0,x.mastery+5));x.interval=Math.min(60,Math.max(1,Math.round(x.interval*1.2)))}
+ if(type==="forgot"){x.mastery=Math.max(0,x.mastery-20);x.interval=1}
+ x.last=today();x.next=new Date(Date.now()+x.interval*86400000).toISOString().slice(0,10);data.reviews++;data.days[today()]=1;
+ save();closeModal();renderReview();
+}
+function renderText(text){
+ const words=text.split(/(\b[A-Za-z][A-Za-z'-]*\b)/g);
+ return words.map(t=>/^[A-Za-z]/.test(t)?`<span class="word" onclick="addWord('${t.replace(/'/g,"")}')">${t}</span>`:t).join("");
+}
+function loadDemo(){
+ const t=`Reading regularly is one of the most effective ways to improve English. When learners meet a new word in context, they can understand not only its basic meaning but also how it is used in a real sentence. A good reading habit also helps students notice grammar, sentence structure, and common expressions.`;
+document.getElementById("articleInput").value=t;document.getElementById("readerBox").innerHTML=renderText(t);
+}
+function clearReader(){document.getElementById("articleInput").value="";document.getElementById("readerBox").textContent="文章内容会显示在这里。"}
+function saveArticle(){
+ const text=document.getElementById("articleInput").value.trim();if(!text)return alert("请先输入文章");
+ data.articles.unshift({id:Date.now(),title:text.split(/\\s+/).slice(0,7).join(" ")+"…",text,date:today()});
+ data.articles=data.articles.slice(0,50);save();alert("文章已保存");
+}
+function renderArticles(){
+ const el=document.getElementById("articleList");el.innerHTML=data.articles.length?data.articles.map(a=>`<div class="item"><b>${escapeHtml(a.title)}</b><div class="small muted">${a.date}</div><br><button onclick="openArticle(${a.id})">打开</button></div>`).join(""):"暂无文章";
+}
+function openArticle(id){let a=data.articles.find(x=>x.id===id);if(a){show("reader");document.getElementById("articleInput").value=a.text;document.getElementById("readerBox").innerHTML=renderText(a.text)}}
+function renderVocab(){
+ const q=(document.getElementById("vsearch").value||"").toLowerCase();let arr=Object.values(data.words).filter(x=>x.word.includes(q)).sort((a,b)=>b.seen-a.seen);
+ document.getElementById("vocabList").innerHTML=arr.length?arr.map(x=>`<div class="item"><div class="row"><b class="grow">${x.word}</b><span class="tag">掌握 ${x.mastery}%</span><span class="tag">${x.interval}天间隔</span></div><div class="progress"><div class="bar" style="width:${x.mastery}%"></div></div><p class="small muted">出现 ${x.seen} 次 · 下次 ${x.next}</p><button onclick="openWord('${x.word}')">查看</button></div>`).join(""):"词库为空。阅读文章时点击单词即可加入。";
+}
+function dueWords(){return Object.values(data.words).filter(x=>x.next<=today()).sort((a,b)=>a.mastery-b.mastery)}
+function renderReview(){
+ const due=dueWords(),el=document.getElementById("reviewArea");
+ if(!due.length){el.innerHTML="<h3>今天没有到期单词 🎉</h3><p class='muted'>继续阅读，新的单词会自动进入复习系统。</p>";return}
+ currentReview=due[0];el.innerHTML=`<div class="review-word">${currentReview.word}</div><p class="muted">出现 ${currentReview.seen} 次 · 掌握 ${currentReview.mastery}% · 当前间隔 ${currentReview.interval} 天</p><div class="row" style="justify-content:center"><button onclick="markWord('${currentReview.word}','remember')">记住</button><button class="warning" onclick="markWord('${currentReview.word}','fuzzy')">模糊</button><button class="danger" onclick="markWord('${currentReview.word}','forgot')">忘记</button></div>`;
+}
+function renderAll(){
+ document.getElementById("sArticles").textContent=data.articles.length;
+ document.getElementById("sWords").textContent=Object.keys(data.words).length;
+ document.getElementById("sMastered").textContent=Object.values(data.words).filter(x=>x.mastery>=80).length;
+ document.getElementById("sReviews").textContent=data.reviews||0;
+ document.getElementById("sDays").textContent=Object.keys(data.days||{}).length;
+ document.getElementById("sStreak").textContent=calcStreak();
+}
+function calcStreak(){
+ let n=0,d=new Date();while(true){let k=d.toISOString().slice(0,10);if(!data.days?.[k])break;n++;d.setDate(d.getDate()-1)}return n;
+}
+function previewImage(e){let f=e.target.files[0];if(!f)return;let u=URL.createObjectURL(f);document.getElementById("imgPreview").innerHTML=`<img src="${u}" style="max-width:100%;max-height:400px;border-radius:12px"><p class="muted">图片已载入。V3.3 暂不调用 OCR API。</p>`}
+function pdfInfo(){let f=document.getElementById("pdfFile").files[0];document.getElementById("importMsg").textContent=f?`已选择：${f.name}。当前 GitHub Pages 版本提供文件入口，但暂不做完整 PDF 文本解析。`:"请先选择 PDF。"}
+function urlInfo(){let u=document.getElementById("urlInput").value.trim();document.getElementById("importMsg").textContent=u?`已记录网址：${u}。由于浏览器跨域限制，静态 GitHub Pages 不能保证直接抓取任意网页，请将正文复制到阅读器。`:"请输入网址。"}
+function exportData(){let blob=new Blob([JSON.stringify(data,null,2)],{type:"application/json"}),a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download="linguaflow-v33-backup.json";a.click()}
+function importData(e){let f=e.target.files[0];if(!f)return;let r=new FileReader();r.onload=()=>{try{data=JSON.parse(r.result);save();alert("导入成功")}catch{alert("文件格式错误")}};r.readAsText(f)}
+function resetAll(){if(confirm("确定清空所有本地数据？")){localStorage.removeItem(KEY);location.reload()}}
+function escapeHtml(s){return s.replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[m]))}
+navInit();loadDemo();renderAll();
 </script>
-</body></html>
+</body>
+</html>
