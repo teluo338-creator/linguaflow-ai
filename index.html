@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>LinguaFlow AI V3.4</title>
+<title>LinguaFlow AI V3.5 · Secure DeepSeek</title>
 <style>
 *{box-sizing:border-box}body{margin:0;font-family:Arial,"Microsoft YaHei",sans-serif;background:#f5f7fb;color:#18202a}
 button,input,textarea,select{font:inherit}button{cursor:pointer;border:0;border-radius:10px;padding:10px 14px;background:#2563eb;color:#fff}
@@ -13,7 +13,7 @@ button,input,textarea,select{font:inherit}button{cursor:pointer;border:0;border-
 </head>
 <body>
 <div class="app">
-<aside class="side"><div class="brand">LinguaFlow AI</div><div class="muted" style="color:#9ca3af">V3.4 · Analytics & Study Advice</div><div class="nav" id="nav"></div></aside>
+<aside class="side"><div class="brand">LinguaFlow AI</div><div class="muted" style="color:#9ca3af">V3.5 · Secure DeepSeek</div><div class="nav" id="nav"></div></aside>
 <main class="main">
 <div class="top"><div><h1 id="title">学习总览</h1><div class="muted">英语阅读 · 单词 · 复习</div></div><button onclick="exportData()">备份数据</button></div>
 
@@ -29,9 +29,10 @@ button,input,textarea,select{font:inherit}button{cursor:pointer;border:0;border-
 
 <section id="reader" class="page">
 <div class="card"><h2>阅读器</h2>
-<div class="row"><button onclick="loadDemo()">载入示例文章</button><button class="secondary" onclick="saveArticle()">保存文章</button><button onclick="clearReader()">清空</button></div>
+<div class="row"><button onclick="loadDemo()">载入示例文章</button><button class="secondary" onclick="saveArticle()">保存文章</button><button onclick="clearReader()">清空</button><button class="secondary" onclick="changeFont(-1)">A−</button><button class="secondary" onclick="changeFont(1)">A+</button><button class="success" onclick="analyzeArticleAI()">AI 分析全文</button></div>
 <br><textarea id="articleInput" rows="8" placeholder="把英文文章粘贴到这里……"></textarea><br><br>
-<div id="readerBox" class="reader">文章内容会显示在这里。点击单词即可查看词义并加入词库。</div>
+<div id="readerBox" class="reader" onmouseup="captureSelection()">文章内容会显示在这里。点击单词即可查看词义并加入词库。</div>
+<div class="card" style="margin-top:14px"><h3>AI 长难句分析</h3><p class="muted small">在上方阅读区选中一句英文，再点击下面按钮。</p><div class="row"><input id="selectedSentence" placeholder="选中的英文句子会显示在这里"><button onclick="analyzeSentenceAI()">AI 分析句子</button></div></div>
 </div>
 </section>
 
@@ -69,31 +70,49 @@ button,input,textarea,select{font:inherit}button{cursor:pointer;border:0;border-
 <div class="card"><div class="muted">待复习单词</div><div class="stat" id="sDue">0</div></div>
 </div>
 <div class="card"><h2>学习趋势</h2><div id="trendBox"></div></div>
-<div class="card"><h2>AI 学习建议（本地规则版）</h2><div id="adviceBox"></div></div>
+<div class="card"><h2>AI 学习建议</h2><div class="row"><button onclick="getStudyAdviceAI()">用 DeepSeek 生成建议</button><button class="secondary" onclick="renderLocalAdvice()">使用本地建议</button></div><div id="adviceBox"></div></div>
 <div class="card"><h2>记忆状态说明</h2><p>忘记：缩短复习间隔；模糊：保持或小幅增加；记住：延长间隔。最高暂设 60 天。</p></div>
 </section>
 
 <section id="settings" class="page">
 <div class="card"><h2>数据管理</h2><button onclick="exportData()">导出 JSON</button> <button class="secondary" onclick="document.getElementById('importData').click()">导入 JSON</button><input id="importData" type="file" accept=".json" class="hidden" onchange="importData(event)"><button class="danger" onclick="resetAll()">清空全部数据</button></div>
+<div class="card"><h2>移动端</h2><p>V3.5 已优化手机端导航、卡片布局和阅读区域。可直接用手机浏览器打开 GitHub Pages 地址。</p></div>
+</section>
+
+<section id="account" class="page">
+<div class="card"><h2>账号与云同步</h2>
+<p>当前版本采用“GitHub Pages 前端 + Cloudflare Worker 安全代理 + DeepSeek API”架构。API Key 只保存在 Cloudflare Worker 的 Secret 中，不会放进网页代码、localStorage 或导出的学习数据。</p>
+<div class="item"><b>学习者信息</b><div class="row"><input id="profileName" placeholder="称呼/昵称"><select id="profileLevel"><option>未设置</option><option>初中</option><option>高中</option><option>大学</option><option>英语考试</option><option>其他</option></select><button onclick="saveProfile()">保存</button></div></div>
+<div class="item"><b>本地数据</b><p class="muted">学习记录保存在当前浏览器的 localStorage 中。</p></div>
+<div class="item"><b>DeepSeek 安全代理</b>
+<p class="muted">网页端只保存你的 Worker 地址和模型名称，不保存 DeepSeek API Key。Worker 再把请求安全转发给 DeepSeek。</p>
+<div class="row"><input id="apiBase" placeholder="Cloudflare Worker 地址，例如 https://linguaflow-ai-api.xxx.workers.dev"><select id="apiModel"><option value="deepseek-flash">deepseek-flash（推荐）</option><option value="deepseek-v4-pro">deepseek-v4-pro</option></select><button onclick="saveApiSettings()">保存并测试</button></div>
+<p id="apiStatus" class="small muted"></p>
+<p class="small muted">安全提示：不要把 DeepSeek API Key 粘贴到这个网页。请把 Key 设置到 Cloudflare Worker 的 Secret：DEEPSEEK_API_KEY。</p></div>
+<div class="item"><b>跨设备同步</b><p class="muted">正式云同步需要后端数据库/登录服务；V3.5 先提供 JSON 导入导出，避免强制接入付费服务。</p></div>
+<div class="item"><b>建议</b><p class="muted">换手机或浏览器前先导出 JSON，之后在新设备导入即可恢复。</p></div>
+</div>
 </section>
 </main>
 </div>
 <div class="mobile-nav" id="mnav"></div>
 
 <div class="modal" id="modal"><div class="modalbox"><div class="row"><h2 id="modalWord" class="grow"></h2><button class="secondary" onclick="closeModal()">关闭</button></div><div id="modalBody"></div></div></div>
+<div class="modal" id="aiModal"><div class="modalbox"><div class="row"><h2 id="aiTitle" class="grow">DeepSeek AI</h2><button class="secondary" onclick="closeAIModal()">关闭</button></div><div id="aiBody">正在分析……</div></div></div>
 
 <script>
 const KEY="linguaflow_v33";
-let data=JSON.parse(localStorage.getItem(KEY)||'{"articles":[],"words":{},"reviews":0,"days":{},"reviewLog":{}}');
+let data=JSON.parse(localStorage.getItem(KEY)||'{"version":"3.5","articles":[],"words":{},"reviews":0,"days":{},"reviewLog":{},"profile":{"name":"学习者","level":"未设置"}}');
+data.version="3.5-secure";data.reviewLog=data.reviewLog||{};data.profile=data.profile||{name:"学习者",level:"未设置"};data.api=data.api||{base:"",model:"deepseek-flash"};if(data.api.key){delete data.api.key;save();}
 data.reviewLog=data.reviewLog||{};
 let currentReview=null;
-const pages=[["dashboard","总览"],["reader","阅读器"],["import","导入"],["vocab","词库"],["review","复习"],["resources","资源库"],["stats","统计"],["settings","设置"]];
+const pages=[["dashboard","总览"],["reader","阅读器"],["import","导入"],["vocab","词库"],["review","复习"],["resources","资源库"],["stats","统计"],["settings","设置"],["account","账号"]];
 function save(){localStorage.setItem(KEY,JSON.stringify(data));renderAll()}
 function navInit(){
  const nav=document.getElementById("nav"), mn=document.getElementById("mnav");
  pages.forEach(([id,n],i)=>{let b=document.createElement("button");b.textContent=n;b.onclick=()=>show(id);nav.appendChild(b);let m=b.cloneNode(true);m.onclick=()=>show(id);mn.appendChild(m)});
 }
-function show(id){document.querySelectorAll(".page").forEach(x=>x.classList.remove("active"));document.getElementById(id).classList.add("active");document.getElementById("title").textContent=pages.find(x=>x[0]===id)?.[1]||"";document.querySelectorAll(".nav button").forEach((b,i)=>b.classList.toggle("active",pages[i][0]===id));if(id==="vocab")renderVocab();if(id==="review")renderReview();if(id==="resources")renderArticles()}
+function show(id){document.querySelectorAll(".page").forEach(x=>x.classList.remove("active"));document.getElementById(id).classList.add("active");document.getElementById("title").textContent=pages.find(x=>x[0]===id)?.[1]||"";document.querySelectorAll(".nav button").forEach((b,i)=>b.classList.toggle("active",pages[i][0]===id));if(id==="vocab")renderVocab();if(id==="review")renderReview();if(id==="resources")renderArticles();if(id==="account"){document.getElementById("profileName").value=data.profile?.name||"学习者";document.getElementById("profileLevel").value=data.profile?.level||"未设置";document.getElementById("apiBase").value=data.api?.base||"";document.getElementById("apiModel").value=data.api?.model||"deepseek-flash";document.getElementById("apiStatus").textContent=data.api?.base?"已设置安全代理地址。":"请先填写 Cloudflare Worker 地址。"}}
 function today(){return new Date().toISOString().slice(0,10)}
 function addWord(w){
  w=w.toLowerCase().replace(/[^a-z'-]/g,""); if(!w||w.length<2)return;
@@ -109,7 +128,7 @@ function openWord(w){
  document.getElementById("modalBody").innerHTML=`<p><b>中文释义：</b>本地词库未连接在线词典。你可以先记录这个词，并在复习时判断记忆状态。</p>
  <p><b>出现次数：</b>${x.seen}　<b>掌握度：</b>${x.mastery}%</p>
  <p><b>当前间隔：</b>${x.interval} 天　<b>下次复习：</b>${x.next}</p>
- <div class="row"><button onclick="markWord('${w}','remember')">记住</button><button class="warning" onclick="markWord('${w}','fuzzy')">模糊</button><button class="danger" onclick="markWord('${w}','forgot')">忘记</button></div>`;
+ <div class="row"><button onclick="markWord('${w}','remember')">记住</button><button class="warning" onclick="markWord('${w}','fuzzy')">模糊</button><button class="danger" onclick="markWord('${w}','forgot')">忘记</button><button class="success" onclick="analyzeWordAI('${w.replace(/'/g,"")}')">AI 词汇解析</button></div>`;
  document.getElementById("modal").classList.add("show");
 }
 function closeModal(){document.getElementById("modal").classList.remove("show")}
@@ -131,6 +150,8 @@ function loadDemo(){
 document.getElementById("articleInput").value=t;document.getElementById("readerBox").innerHTML=renderText(t);
 }
 function clearReader(){document.getElementById("articleInput").value="";document.getElementById("readerBox").textContent="文章内容会显示在这里。"}
+let readerFont=18;
+function changeFont(delta){readerFont=Math.max(14,Math.min(28,readerFont+delta));document.getElementById("readerBox").style.fontSize=readerFont+"px"}
 function saveArticle(){
  const text=document.getElementById("articleInput").value.trim();if(!text)return alert("请先输入文章");
  data.articles.unshift({id:Date.now(),title:text.split(/\\s+/).slice(0,7).join(" ")+"…",text,date:today()});
@@ -168,6 +189,7 @@ function renderAnalytics(){
  document.getElementById("sTodayReviews").textContent=todayReviews;
  document.getElementById("sAvgMastery").textContent=avg+"%";
  document.getElementById("sDue").textContent=due;
+ document.getElementById("helloName").textContent=data.profile?.name||"学习者";
  const days=Object.keys(data.days||{}).sort().slice(-7);
  document.getElementById("trendBox").innerHTML=days.length
    ? days.map(d=>`<div class="item"><div class="row"><b class="grow">${d}</b><span>${data.reviewLog?.[d]||0} 次复习</span></div><div class="progress"><div class="bar" style="width:${Math.min(100,(data.reviewLog?.[d]||0)*10)}%"></div></div></div>`).join("")
@@ -182,6 +204,130 @@ function renderAnalytics(){
  if((data.reviewLog?.[today()]||0)===0 && words.length) advice.push("今天还没有复习记录，建议现在完成第一轮复习。");
  document.getElementById("adviceBox").innerHTML=advice.map(x=>`<div class="item">💡 ${x}</div>`).join("");
 }
+function saveProfile(){data.profile={name:document.getElementById("profileName").value.trim()||"学习者",level:document.getElementById("profileLevel").value};save();alert("学习者信息已保存")}
+
+function getApiBase(){return (data.api?.base||"").trim().replace(/\/$/,"")}
+function getApiModel(){return data.api?.model||"deepseek-flash"}
+function saveApiSettings(){
+ const base=document.getElementById("apiBase").value.trim().replace(/\/$/,"");
+ const model=document.getElementById("apiModel").value;
+ data.api={base,model};save();
+ document.getElementById("apiStatus").textContent=base?"正在测试安全代理……":"已清空安全代理地址";
+ if(base) testDeepSeek();
+}
+async function testDeepSeek(){
+ try{
+  const text=await callDeepSeek("你是 LinguaFlow AI 的测试助手。请只回复“连接成功”。","请测试连接。",120);
+  document.getElementById("apiStatus").textContent="✅ 安全代理连接成功："+text;
+ }catch(e){document.getElementById("apiStatus").textContent="❌ 连接失败："+e.message}
+}
+function openAIModal(title="DeepSeek AI"){
+ document.getElementById("aiTitle").textContent=title;
+ document.getElementById("aiBody").innerHTML="正在分析，请稍候……";
+ document.getElementById("aiModal").classList.add("show");
+}
+function closeAIModal(){document.getElementById("aiModal").classList.remove("show")}
+function esc(s){return String(s||"").replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[m]))}
+async function callDeepSeek(system,user,maxTokens=900){
+ const base=getApiBase();
+ if(!base) throw new Error("还没有设置 Cloudflare Worker 地址，请先到“账号”页面填写并保存。");
+ const res=await fetch(base+"/api/chat",{
+  method:"POST",
+  headers:{"Content-Type":"application/json"},
+  body:JSON.stringify({
+   model:getApiModel(),
+   messages:[{role:"system",content:system},{role:"user",content:user}],
+   stream:false,
+   max_tokens:maxTokens
+  })
+ });
+ let payload={}; try{payload=await res.json()}catch{}
+ if(!res.ok) throw new Error(payload?.error?.message||payload?.message||("HTTP "+res.status));
+ return payload?.choices?.[0]?.message?.content||"没有收到有效回复。";
+}
+function captureSelection(){
+ const s=window.getSelection()?.toString().trim();
+ if(s && s.length>8 && s.length<1000) document.getElementById("selectedSentence").value=s;
+}
+async function analyzeWordAI(w){
+ openAIModal("AI 词汇解析 · "+w);
+ try{
+  const prompt=`请分析英文单词“${w}”，面向中国中学生英语阅读学习。严格按以下结构输出：
+1. 中文核心义
+2. 英文简明释义
+3. 常见词性
+4. 词根/词缀或构词线索（不知道就写“不明显”）
+5. 常见搭配
+6. 同义词与反义词
+7. 阅读中最常见的语境
+8. 一条简短例句
+9. 考试重要度：低/中/高，并说明原因
+不要编造不确定的词源。`;
+  const r=await callDeepSeek("你是一名严谨的英语教师和词汇学习助手。",prompt,700);
+  document.getElementById("aiBody").innerHTML="<div style='white-space:pre-wrap;line-height:1.8'>"+esc(r)+"</div>";
+ }catch(e){document.getElementById("aiBody").innerHTML="<p>❌ "+esc(e.message)+"</p>"}
+}
+async function analyzeSentenceAI(){
+ const s=document.getElementById("selectedSentence").value.trim();
+ if(!s) return alert("请先选中或输入一句英文。");
+ openAIModal("AI 长难句分析");
+ try{
+  const prompt=`请分析下面英文句子，面向中国中学生/高中生英语阅读学习：
+“${s}”
+请按以下结构回答：
+1. 整句中文翻译
+2. 主干（主语 + 谓语 + 宾语/表语）
+3. 从句及其类型
+4. 非谓语结构
+5. 重要修饰成分
+6. 核心语法点
+7. 容易误解的地方
+8. 考试/阅读重点
+请尽量用清晰的分层方式解释，不要省略关键结构。`;
+  const r=await callDeepSeek("你是一名擅长英语长难句拆解的中学英语教师。",prompt,1100);
+  document.getElementById("aiBody").innerHTML="<div style='white-space:pre-wrap;line-height:1.8'>"+esc(r)+"</div>";
+ }catch(e){document.getElementById("aiBody").innerHTML="<p>❌ "+esc(e.message)+"</p>"}
+}
+async function analyzeArticleAI(){
+ const text=document.getElementById("articleInput").value.trim();
+ if(!text) return alert("请先输入英文文章。");
+ openAIModal("AI 全文分析");
+ try{
+  const prompt=`请分析下面的英文阅读文章，面向中国学生。文章：
+${text.slice(0,30000)}
+请输出：
+一、文章主旨
+二、段落结构概括
+三、重要高频词/短语（最多15个）
+四、值得精读的长句（最多5句）
+五、核心语法/表达
+六、阅读理解可能考查点
+七、按难度给出学习建议（基础/中等/进阶）
+不要虚构文章中不存在的信息。`;
+  const r=await callDeepSeek("你是一名英语阅读教师，负责把文章变成可执行的学习材料。",prompt,1500);
+  document.getElementById("aiBody").innerHTML="<div style='white-space:pre-wrap;line-height:1.8'>"+esc(r)+"</div>";
+ }catch(e){document.getElementById("aiBody").innerHTML="<p>❌ "+esc(e.message)+"</p>"}
+}
+async function getStudyAdviceAI(){
+ openAIModal("AI 学习建议");
+ try{
+  const words=Object.values(data.words), avg=words.length?Math.round(words.reduce((s,x)=>s+(x.mastery||0),0)/words.length):0;
+  const due=dueWords().length, articles=data.articles.length, reviews=data.reviews||0, streak=calcStreak();
+  const prompt=`请根据学习数据给出一份可执行的英语阅读学习建议。数据：
+文章数：${articles}
+词库：${words.length}
+平均掌握度：${avg}%
+待复习：${due}
+累计复习：${reviews}
+连续学习天数：${streak}
+请给出：今日建议、未来7天建议、阅读建议、词汇复习建议、长难句建议。总长度控制在600字以内。`;
+  const r=await callDeepSeek("你是一名温和、务实的英语学习规划老师。",prompt,900);
+  closeAIModal();document.getElementById("adviceBox").innerHTML="<div class='item' style='white-space:pre-wrap;line-height:1.8'>"+esc(r)+"</div>";
+  show("stats");
+ }catch(e){document.getElementById("aiBody").innerHTML="<p>❌ "+esc(e.message)+"</p>"}
+}
+function renderLocalAdvice(){renderAnalytics()}
+
 function calcStreak(){
  let n=0,d=new Date();while(true){let k=d.toISOString().slice(0,10);if(!data.days?.[k])break;n++;d.setDate(d.getDate()-1)}return n;
 }
